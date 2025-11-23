@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>子どもの名前字画診断ツール｜苗字と入れたい漢字から一括検索【無料】</title>
+  <meta name="description" content="苗字と入れたい漢字を入力するだけで、字画の良い名前候補だけを自動で一覧表示する無料の姓名判断ツールです。赤ちゃんの名付け候補を効率よく比較できます。">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://baby-onamae.jp/">
+
+  <!-- OGP -->
+  <meta property="og:site_name" content="子どもの名前字画診断ツール">
+  <meta property="og:title" content="子どもの名前字画診断ツール｜苗字と入れたい漢字から一括検索【無料】">
+  <meta property="og:description" content="苗字と入れたい漢字を入力するだけで、字画の良い名前候補だけを自動で一覧表示する無料の姓名判断ツールです。赤ちゃんの名付け候補を効率よく比較できます。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://baby-onamae.jp/">
+  <meta property="og:image" content="https://baby-onamae.jp/ogp.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="子どもの名前字画診断ツール｜苗字と入れたい漢字から一括検索【無料】">
+  <meta name="twitter:description" content="苗字と入れたい漢字を入力するだけで、字画の良い名前候補だけを自動で一覧表示する無料の姓名判断ツールです。赤ちゃんの名付け候補を効率よく比較できます。">
+  <meta name="twitter:image" content="https://baby-onamae.jp/ogp.png">
+
+  <!-- Google Fonts: Zen Maru Gothic (丸ゴシック) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Zen Maru Gothic"', 'sans-serif'],
+          },
+          colors: {
+            orange: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              900: '#7c2d12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "子どもの名前字画診断ツール",
+    "url": "https://baby-onamae.jp/",
+    "description": "苗字と入れたい漢字を入力するだけで、字画の良い名前候補だけを自動で一覧表示する無料の姓名判断ツールです。赤ちゃんの名付け候補を効率よく比較できます。",
+    "applicationCategory": "EducationApplication",
+    "operatingSystem": "All"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "すべての漢字に対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JIS第一・第二水準の主な漢字に対応していますが、一部の旧字体や特殊な漢字には対応していない場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "診断結果は保存されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ。入力されたお名前や結果はサーバーに送信されず、お使いのブラウザ内だけで処理されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "姓名判断の流派は何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的な五格（天格・人格・地格・外格・総格）を用いた簡易的な診断です。流派によって解釈や画数の数え方が異なる場合がありますので、あくまで参考情報としてご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "赤ちゃん以外の名前にも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい。お子さまの名付けを主な用途としていますが、ご自身やペンネームなど、姓名判断として幅広く利用することができます。"
+        }
+      }
+    ]
+  }
+  </script>
+
+
+</head>
+<body class="text-stone-800 antialiased">
+<header class="site-header">
+  <div class="container header-inner flex justify-between items-center">
+    <div>
+      <h1 class="site-title">姓名診断サジェスト</h1>
+      <p class="site-subtitle">
+        入れたい漢字から、運勢の良い名前だけを一括検索
+      </p>
+    </div>
+  </div>
+</header>
+  <main class="container main-content">
+    <!-- ① 最初の検索カード -->
+    <section class="card search-card" id="search-top">
+      <div class="search-card-header">
+        <h2><span class="text-2xl">🔍</span> 条件を入力して検索</h2>
+        <p class="search-lead">
+          苗字と使いたい漢字（任意）を入れるだけで、画数の良い名前を自動でピックアップします。
+        </p>
+      </div>
+
+      <form id="searchForm" class="form-grid">
+        <div class="form-group">
+          <label for="familyName">
+            苗字 <span class="text-red-500">*</span>
+            <span class="note">必須</span>
+          </label>
+          <input id="familyName" type="text" required placeholder="例：田中">
+        </div>
+
+        <div class="form-group">
+          <label for="preferredKanji">
+            使いたい漢字
+            <span class="note">空白区切りで複数可</span>
+          </label>
+          <input id="preferredKanji" type="text" placeholder="例：太 郎 花">
+        </div>
+
+        <div class="form-group">
+          <label for="targetLuck">希望する運勢</label>
+          <select id="targetLuck">
+            <option value="all">指定なし（全て）</option>
+            <option value="excellent">大吉のみ</option>
+            <option value="good">吉以上</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-button group">
+            <span>運勢の良い名前を見る</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ② 検索結果カード（JSで制御） -->
+    <section class="card results-card" id="resultsSection" hidden>
+      <div class="results-header">
+        <h2>✨ 診断結果</h2>
+        <p id="resultsSummary" class="results-summary"></p>
+      </div>
+      <div id="resultsContainer" class="results-container">
+        <!-- JSでここに結果が挿入されます -->
+      </div>
+    </section>
+
+    <!-- ④ HEROセクション -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <span class="hero-tag">パパ・ママのための命名支援ツール</span>
+          <h2 class="hero-title">
+            名前を一つずつ調べるのは、<br>もう終わりにしませんか？
+          </h2>
+          <p class="hero-body">
+            「良い名前が思いつかない」「画数計算が大変」...<br>
+            そんな悩みを解決。使いたい漢字を決めるだけで、
+            <strong>運勢の良い名前の組み合わせだけ</strong>を瞬時にリストアップします。
+          </p>
+          <ul class="hero-bullets">
+            <li>使いたい漢字を指定して一括検索</li>
+            <li>「大吉」「吉」の名前だけをサジェスト</li>
+            <li>五格（天格・地格など）も自動計算</li>
+          </ul>
+          <a href="#search-top" class="primary-button hero-cta mt-4">
+            今すぐ診断する
+          </a>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card-preview transform rotate-3 hover:rotate-0 transition-transform duration-500">
+            <div class="flex justify-between items-center mb-2 border-b pb-2">
+              <span class="font-bold text-gray-700">田中 太郎</span>
+              <span class="hero-score-good bg-orange-100 px-2 py-1 rounded text-xs">吉</span>
+            </div>
+            <div class="flex justify-between items-center mb-2 border-b pb-2">
+              <span class="font-bold text-gray-700">田中 太一</span>
+              <span class="hero-score-excellent bg-red-100 px-2 py-1 rounded text-xs">大吉</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-700">田中 結衣</span>
+              <span class="hero-score-excellent bg-red-100 px-2 py-1 rounded text-xs">大吉</span>
+            </div>
+            <p class="hero-mini-note mt-2 text-xs text-gray-400 text-center">※ 検索イメージ</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- ⑤ 特長セクション -->
+  <section class="card features-card bg-white/50 border-none shadow-none">
+    <h2 class="text-center text-2xl font-bold text-stone-700 mb-8">💡 こんな時におすすめ</h2>
+    <div class="features-list">
+      <!-- Feature 1 -->
+      <div class="feature-item">
+        <div class="feature-icon">
+          <img src="assets/images/icon-repeat.png" alt="繰り返し作業を減らすアイコン">
+        </div>
+        <div class="feature-text">
+          <h3>何度も入力しなくていい</h3>
+          <p>名前を1つずつ入力して「凶」が出てガッカリ...を繰り返す必要はありません。</p>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-item">
+        <div class="feature-icon">
+          <img src="assets/images/icon-idea.png" alt="アイデアがひらめくアイコン">
+        </div>
+        <div class="feature-text">
+          <h3>アイデアが広がる</h3>
+          <p>「太」や「愛」など、使いたい漢字を入れるだけで、相性の良い組み合わせをご提案。</p>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-item">
+        <div class="feature-icon">
+          <img src="assets/images/icon-pattern.png" alt="パターンの組み合わせアイコン">
+        </div>
+        <div class="feature-text">
+          <h3>比較検討がスムーズ</h3>
+          <p>一覧で運勢を見比べられるので、家族会議での候補出しに最適です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ⑥ Before / After セクション -->
+    <section class="card beforeafter-card">
+      <h2 class="text-xl font-bold mb-4">これまでのサイトと何が違うの？</h2>
+      <div class="beforeafter-grid">
+        <div class="before-block">
+          <h3 class="text-red-600 flex items-center gap-2">
+            <span>❌</span> 一般的なサイト
+          </h3>
+          <ul class="list-disc text-sm text-gray-600 space-y-1">
+            <li>名前を考える → 入力する → 結果を見る</li>
+            <li>運勢が悪いと、また最初からやり直し</li>
+            <li>「他にどんな名前があるかな...」と悩む</li>
+          </ul>
+        </div>
+        <div class="after-block">
+          <h3 class="text-green-600 flex items-center gap-2">
+            <span>✅</span> 当サイト
+          </h3>
+          <ul class="list-disc text-sm text-gray-600 space-y-1">
+            <li>苗字と漢字を入れるだけ</li>
+            <li>運勢の良い名前リストがズラッと出る</li>
+            <li>効率よく最高の名前を見つけられる</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- ⑦ このツールについて -->
+    <section class="card about-card">
+      <h2 class="text-xl font-bold mb-4">このツールについて</h2>
+      <p class="text-sm text-gray-700 leading-relaxed mb-3">
+        「子どもの名前字画診断ツール」は、苗字と使いたい漢字を入力するだけで、一般的な五格（天格・人格・地格・外格・総格）にもとづいて画数を計算し、運勢の良い組み合わせだけを一覧表示することを目指したウェブアプリです。名前候補を1つずつ調べる手間を減らし、候補を広げながらも、画数のバランスを直感的に比較できるように設計しています。
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        診断結果はあくまで名付けの参考情報のひとつです。最終的な名前の決定にあたっては、ご家族の価値観や響き、お子さまへの想いを大切にしつつ、本ツールの結果も上手に活用していただければ幸いです。
+      </p>
+    </section>
+
+    <!-- ⑧ FAQセクション -->
+    <section class="card faq-card">
+      <h2>❓ よくある質問</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>Q. すべての漢字に対応していますか？</h3>
+          <p class="text-sm text-gray-600">
+            JIS第一・第二水準の主な漢字に対応していますが、一部の旧字体や特殊な漢字には対応していない場合があります。
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>Q. 診断結果は保存されますか？</h3>
+          <p class="text-sm text-gray-600">
+            いいえ。入力されたお名前や結果はサーバーに送信されず、お使いのブラウザ内だけで処理されますので安心です。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑨ 最後の検索カード -->
+    <section class="card search-card search-card-bottom">
+      <h2 class="justify-center">もう一度診断する</h2>
+      <p class="search-lead mb-6">
+        大切なお子様への最初のプレゼント。<br>素敵な名前が見つかりますように。
+      </p>
+      <a href="#search-top" class="primary-button max-w-xs mx-auto">
+        ページ上部へ戻る
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 字画診断サジェスト</p>
+      <p class="footer-note mt-2 text-xs opacity-70">
+        ※本ツールの診断結果は、一般的な五格に基づいた簡易的なものです。流派によって結果が異なる場合があります。
+      </p>
+    </div>
+  </footer>
+
+  <!-- JSファイルの読み込み順序を維持 -->
+  <script src="js/all_kanji_master.js"></script>
+  <script src="js/patterns.js"></script>
+  <script src="js/given_names.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
