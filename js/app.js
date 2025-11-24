@@ -1,6 +1,6 @@
-// -----------------------------------------------
-// グローバル関数として画数計算を公開
-// -----------------------------------------------
+// ================================================================
+// 1. グローバル関数として画数計算を公開
+// ================================================================
 function calcStrokeForString(str) {
   if (!str) return 0;
 
@@ -11,19 +11,18 @@ function calcStrokeForString(str) {
     const strokes = ALL_KANJI_MASTER[ch];
     if (strokes == null) {
       console.warn(`画数マスタに存在しない文字: ${ch}`);
-      return 0; // 1文字でも不明なら 0 扱い
+      return 0;
     }
     total += strokes;
   }
   return total;
 }
-
 window.calcStrokeForString = calcStrokeForString;
 
 
-// -----------------------------------------------
-// 五格計算
-// -----------------------------------------------
+// ================================================================
+// 2. 五格計算処理
+// ================================================================
 function calcGokaku(familyName, givenName) {
   const familyStroke = calcStrokeForString(familyName);
   const givenStroke  = calcStrokeForString(givenName);
@@ -45,27 +44,72 @@ function calcGokaku(familyName, givenName) {
 }
 
 
-// -----------------------------------------------
-// 吉凶判定（patterns.js）
-// -----------------------------------------------
+// ================================================================
+// 3. 吉凶判定（patterns.js）
+// ================================================================
 function judgeRank(strokes) {
   const info = LUCK_PATTERNS.total[strokes];
   return info || LUCK_PATTERNS.rankMeta.unknown;
 }
 
 
-// -----------------------------------------------
-// DOM Ready
-// -----------------------------------------------
+// ================================================================
+// 4. GA4：未捕捉エラー / Promiseエラー を一括で拾う
+// ================================================================
+window.onerror = function (message, source, lineno, colno, error) {
+  try {
+    if (typeof gtag === "function") {
+      gtag("event", "js_error", {
+        message: String(message),
+        source: source || "",
+        lineno: lineno || 0,
+        colno: colno || 0,
+        stack: error && error.stack 
+          ? error.stack.substring(0, 500) 
+          : ""
+      });
+    }
+  } catch (_) {}
+};
+
+window.addEventListener("unhandledrejection", function (event) {
+  try {
+    if (typeof gtag === "function") {
+      gtag("event", "js_unhandled_promise", {
+        reason: String(event.reason),
+        stack: event.reason && event.reason.stack
+          ? event.reason.stack.substring(0, 500)
+          : ""
+      });
+    }
+  } catch (_) {}
+});
+
+// アプリ内部で任意エラーを送る用
+function reportAppError(type, detail = "") {
+  try {
+    if (typeof gtag === "function") {
+      gtag("event", "app_error", {
+        error_type: type,
+        detail: String(detail).substring(0, 500)
+      });
+    }
+  } catch (_) {}
+}
+
+
+// ================================================================
+// 5. DOM Ready
+// ================================================================
 window.addEventListener("DOMContentLoaded", () => {
   const form            = document.getElementById("searchForm");
   const resultsSection  = document.getElementById("resultsSection");
   const resultsSummary  = document.getElementById("resultsSummary");
   const resultsContainer= document.getElementById("resultsContainer");
 
-  // ---------------------------------------------
-  // Submit
-  // ---------------------------------------------
+  // --------------------------------------------------------------
+  // Submit（検索実行）
+  // --------------------------------------------------------------
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -81,6 +125,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const familyStroke = calcStrokeForString(familyName);
     if (familyStroke === 0) {
       alert("苗字に対応していない漢字があります（画数マスタ不足）");
+      reportAppError("stroke_master_missing", familyName);
       return;
     }
 
@@ -95,13 +140,47 @@ window.addEventListener("DOMContentLoaded", () => {
       targetLuck
     });
 
+    // ------------------------------------------------------------
+    // GA4: サイト内検索イベント（ view_search_results ）
+    // ------------------------------------------------------------
+    try {
+      if (typeof gtag === "function") {
+        const parts = [];
+        if (familyName) parts.push(`姓:${familyName}`);
+        if (preferredKanjiInput) parts.push(`漢字:${preferredKanjiInput}`);
+        if (targetLuck && targetLuck !== "all") {
+          const luckLabel =
+            targetLuck === "excellent" ? "大吉のみ" :
+            targetLuck === "good" ? "吉以上" :
+            "指定なし";
+          parts.push(`運勢:${luckLabel}`);
+        }
+        const searchTerm = parts.join(" / ") || "(no term)";
+
+        const totalResults = groups.reduce(
+          (sum, g) => sum + g.candidates.length,
+          0
+        );
+
+        gtag("event", "view_search_results", {
+          search_term: searchTerm,
+          result_count: totalResults,
+          raw_family_name: familyName,
+          raw_preferred_kanji: preferredKanjiInput,
+          target_luck: targetLuck
+        });
+      }
+    } catch (err) {
+      console.warn("GA4検索イベント送信に失敗:", err);
+      reportAppError("ga_search_event_failed", String(err));
+    }
+
     renderResults(groups);
   });
 
-
-  // ---------------------------------------------
-  // 名前候補生成
-  // ---------------------------------------------
+  // --------------------------------------------------------------
+  // 名前候補生成（既存）
+  // --------------------------------------------------------------
   function generateNameGroups({ familyName, familyStroke, preferredKanjiList, targetLuck }) {
     const groups = [];
 
@@ -153,9 +232,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // ---------------------------------------------
-  // 結果一覧（行クリックで詳細を展開）
-  // ---------------------------------------------
+  // --------------------------------------------------------------
+  // 結果生成（既存）
+  // --------------------------------------------------------------
   function renderResults(groups) {
     resultsContainer.innerHTML = "";
 
@@ -220,7 +299,6 @@ window.addEventListener("DOMContentLoaded", () => {
         tr.appendChild(strokeCell);
         tr.appendChild(luckCell);
 
-        // 詳細行
         const detailTr = document.createElement("tr");
         detailTr.className = "detail-row";
         detailTr.style.display = "none";
@@ -241,7 +319,6 @@ window.addEventListener("DOMContentLoaded", () => {
         `;
         detailTr.appendChild(detailTd);
 
-        // トグル挙動
         tr.addEventListener("click", () => {
           const icon = arrowCell.querySelector(".arrow-icon");
           const isOpen = detailTr.style.display === "table-row";
