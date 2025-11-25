@@ -133,6 +133,21 @@ window.addEventListener("DOMContentLoaded", () => {
       ? preferredKanjiInput.split(/\s+/).filter(Boolean)
       : [];
 
+    // ------------------------------------------------------------
+    // ★ GA4：search_execute（検索実行イベント）
+    // ------------------------------------------------------------
+    try {
+      if (typeof gtag === "function") {
+        gtag("event", "search_execute", {
+          family_name: familyName,
+          kanji: preferredKanjiInput,
+          target_luck: targetLuck
+        });
+      }
+    } catch (err) {
+      reportAppError("ga_search_execute_failed", String(err));
+    }
+
     const groups = generateNameGroups({
       familyName,
       familyStroke,
@@ -173,6 +188,21 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.warn("GA4検索イベント送信に失敗:", err);
       reportAppError("ga_search_event_failed", String(err));
+    }
+
+    // ------------------------------------------------------------
+    // ★ 検索結果ゼロ件 → search_zero
+    // ------------------------------------------------------------
+    try {
+      const total = groups.reduce((sum, g) => sum + g.candidates.length, 0);
+      if (total === 0 && typeof gtag === "function") {
+        gtag("event", "search_zero", {
+          family_name: familyName,
+          kanji: preferredKanjiInput
+        });
+      }
+    } catch (err) {
+      reportAppError("ga_search_zero_failed", String(err));
     }
 
     renderResults(groups);
